@@ -203,7 +203,7 @@ Once you make the changes, you can run the demo just like the standard demos in 
    ```
 Below is a sample output from the object detection demo on a scene with multiple objects being detected along with the bounding boxes.
 
-![Object detection demo](https://cdn.alliedvision.com/fileadmin/content/images/landing_pages/Alvium_Camera_Kit_TI/screenshot_starterkit-TI-edge-analysis.png)
+![Object detection demo](https://cdn.alliedvision.com/fileadmin/content/images/landing_pages/Alvium_Camera_Kit_TI/TI-Edge-Analysis.gif)
 
 
 ```c
@@ -211,7 +211,7 @@ Below is a sample output from the object detection demo on a scene with multiple
    ```
 
 Below is a sample output from the semantic segmentation model running on the same scene.
-![Semantic segmentation model](https://cdn.alliedvision.com/fileadmin/content/images/landing_pages/Alvium_Camera_Kit_TI/screenshot_starterkit_semantic-segmentation.png)
+![Semantic segmentation model](https://cdn.alliedvision.com/fileadmin/content/images/landing_pages/Alvium_Camera_Kit_TI/TI-semantic-segmentation.gif)
 
 That is about it.
 There are only two places where the code needs to be changed if you are bringing a new camera to be able to run different demos on the edgeAI platform. With extensive model selection and modular software architecture, it is indeed very easy for developers to make such changes quickly and prototype new system designs with different camera modules needed for industrial applications.

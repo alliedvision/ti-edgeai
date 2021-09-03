@@ -12,7 +12,7 @@ To run this demo application, you need:
 Hardware:
 
 * [EdgeAI Starter Kit EVM](https://software-dl.ti.com/jacinto7/esd/edgeai-devkit)
-* [Camera Module](https://www.alliedvision.com/en/alvium-camera-kit/1800-U-TI-Edge-AI)
+* [Camera Module](https://www.alliedvision.com/en/alvium-camera-kit-1800-u-ti-edge-ai)
 
 
 Software:

@@ -19,6 +19,13 @@ Software:
 * [EdgeAI SDK](https://www.ti.com/tool/PROCESSOR-SDK-J721E)
 * [Vimba SDK for ARM64](https://www.alliedvision.com/en/products/vimba-sdk/#c1497)
 
+## Recommendations
+
+* Use a separate PC to connect via SSH onto the edge AI EVM.
+* Use [Mobaxterm](https://mobaxterm.mobatek.net/) or [Visual Studio Code](https://code.visualstudio.com/) to use SSH. This will make file handling and editing easier.
+* ifconfig can be found under /sbin/ifconfig to get the IP address of the Starter Kit EVM board.
+* Mounted devices such as a USB-drive can be located under /run/media/.
+
 
 
 ### 1. Select your Camera Kit from Allied Vision
@@ -55,7 +62,6 @@ Registering GENICAM_GENTL64_PATH
 Registering VimbaUSBTL device types
 Done
 Please reboot before using the USB transport layer
-Successfully installed VimbaPython-1.1.0
 ```
 
 Please restart the system before proceeding with the next steps. The Vimba SDK has many pre-compiled examples in C and Python that you can use to test the camera and different configuration options. The C or Python APIs can be used to configure the camera properties such as gain, exposure, image size and also to capture images.
@@ -131,6 +137,8 @@ make[1]: Leaving directory '/opt/gst-vimbasrc-master/build'
 
 Now you can use Allied Vision cameras with Vimba and the gStreamer plugin. As a sanity check, use gst-launch-1.0 to capture data from the camera and send to the display. Below command can be used. As you notice in the command, camera configuration can also be done in the same command or optionally, you can pass an XML file with camera configuration parameters. More details are available at https://github.com/alliedvision/gst-vimbasrc.
 
+If you use a monochrome camera, please replace ```format=RGB``` in the following code by ```format=GRAY8```.
+
 ```
 gst-launch-1.0 vimbasrc camera=DEV_1AB22C00C604  exposureauto=2 height=720 width=1280 ! video/x-raw ,format=RGB ! videoscale ! videoconvert ! queue ! kmssink
 ```
@@ -141,7 +149,7 @@ Once you verified this, you can run the edgeAi demos with these cameras using ed
 
 Once you verified this, now is the time to replace the input image portion in the EdgeAI demo framework. EdgeAI SDK has a modular architecture for input data, inferencing and output data. You can use the same software architecture as-is with only replacing how the input is captured.
 
-There are two places where you need to make code changes. First one is setting the pipeline for the input video flow in the .yaml file used by the edge ai application. Below code snippet shows the changes where two additional input sources are added with the correct camera ID from the previous install. One camera is 'input_allied' and the other one is 'input_allied_mono'. In the flow for the inference, you can use the camera you want to use in the demo. The output can be display or a file.
+There are two places where you need to make code changes. First one is setting the pipeline for the input video flow in the .yaml file used by the edge ai application. The .yaml files are located under /opt/edge_ai_apps/configs/. Below code snippet shows the changes where two additional input sources are added with the correct camera ID from the previous install. One camera is 'input_allied' and the other one is 'input_allied_mono'. In the flow for the inference, you can use the camera you want to use in the demo. The output can be display or a file.
 
 ```
 title: "Object Detection Demo Testing with Allied Vision USB camera Sep 2021"
@@ -218,7 +226,7 @@ flows:
 
 ```
 
-Second change is in the get_input_str function of gst_wrapper.py module where the corresponding gst pipeline is set according to the instructions in the previous setup. You can see the modularity of the code when we add additional input sources to make it easy for customers add different types of cameras.
+Second change is in the get_input_str function of gst_wrapper.py module where the corresponding gst pipeline is set according to the instructions in the previous setup. This file is located under /opt/edge_ai_apps/apps_python/. You can see the modularity of the code when we add additional input sources to make it easy for customers add different types of cameras.
 
 ```
 def get_input_str(input):
@@ -274,6 +282,21 @@ Below is a sample output from the object detection demo on a scene with multiple
 ![Object detection demo](https://cdn.alliedvision.com/fileadmin/content/images/landing_pages/Alvium_Camera_Kit_TI/7_av_color_od.gif)
 
 Now, to change the input source from Alvium 1800 U-500c color camera to Alvium 1800 U-158m mono camera, all we need to do is change the .yaml file and run the demo.
+Just change the following line: 
+
+```
+flows:
+    flow0:
+        input: input_allied_mono
+        models: [model1]
+        outputs: [output0]
+        mosaic:
+            mosaic0:
+                width:  1280
+                height: 720
+                pos_x:  320
+                pos_y:  180
+```
 
 Below is a sample output with the mono camera from the object detection demo on a scene with multiple objects being detected along with the bounding boxes.
 
